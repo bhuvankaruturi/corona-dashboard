@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Corona Dashboard</title>
+        <link rel="stylesheet" href="./css/styles.css" type="text/css"/>
+    </head>
+    <body>
+        <nav>
+            <h1>Corona Dashboard</h1>
+            <select id="stat">
+                <option value="confirmed" selected>Confirmed</option>
+                <option value="deaths">Deaths</option>
+            </select>
+            <select id="state">
+                <option value="texas" selected>Texas</option>
+                <option value="alabama">Alabama</option>
+                <option value="arizona">Arizona</option>
+            </select>
+        </nav>
+        <section class="container">
+            <div id="map">
+                <svg version="1.1"
+                        baseprofile="full"
+                        xmlns="http://www.w3.org/2000/svg">
+                </svg>
+            </div>
+            <section class="info-section">
+                <div id="state-info" class="info">
+                    <p>State Name: </p>
+                    <p>Confirmed: </p>
+                    <p>Deaths: </p>
+                    <p>Recovered: </p>
+                </div>
+                <div id="county-info" class="info">
+                    <p>County Name: </p>
+                    <p>Confirmed: </p>
+                    <p>Deaths: </p>
+                    <p>Recovered: </p>
+                </div>
+            </section>
+        </section>  
+        <div id="tooltip"></div>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
+	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+        <script src="./js/index.js"></script>
+    </body>
+</html>
