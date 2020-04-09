@@ -1,5 +1,5 @@
-var width = 700;
-var height = 600;
+var width = 600;
+var height = 550;
 var country = "US";
 var stat = "confirmed";
 var dailyReportBaseUri = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";

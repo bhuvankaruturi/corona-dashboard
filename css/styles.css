@@ -20,23 +20,23 @@ select {
 }
 
 a {
-	color: white;
+	color: black;
 	text-decoration: none;
-	border: 2px solid white;
-	border-radius: 10px;
-	padding: 5px;
+	border: 2px solid black;
+	border-radius: 5px;
+	padding: 2px;
+}
+
+section {
+	margin: 0px 10px;
 }
 
 text {
 	fill: white;
 } 
 
-section {
-	margin: 0px 10px;
-}
-
 a:hover {
-	color: rgb(198, 232, 243)
+	color: rgb(107, 76, 247)
 }
 
 .container {
@@ -53,13 +53,14 @@ a:hover {
 	border-radius: 10px;
 }	
 
-#map h2 {
-	padding: 0;
-	margin: 2px;
-}
-
-.info-section {
+/* .info-section {
 	padding-top: 2px;
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+} */
+
+#scale {
 	display: flex;
 	flex-direction: column;
 	align-items: start;
@@ -72,6 +73,7 @@ a:hover {
 	border-radius: 10px;
 	min-width: 200px;
 	padding: 10px;
+	margin-top: 20px;
 }
 
 .name {
