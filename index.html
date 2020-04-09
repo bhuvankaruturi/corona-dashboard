@@ -6,17 +6,22 @@
     </head>
     <body>
         <nav>
-            <h1>Corona Dashboard</h1>
-            <select id="stat">
-                <option value="confirmed" selected>Confirmed</option>
-                <option value="deaths">Deaths</option>
-            </select>
+            <h1>Corona Dashboard For USA</h1>
+            <label for="stat">Statistic:
+                <select id="stat">
+                    <option value="confirmed" selected>Confirmed</option>
+                    <option value="deaths">Deaths</option>
+                </select>
+            </label>
             <label for="state">State:
-            <select id="state">
-            </select>
+                <select id="state">
+                </select>
             </label>
         </nav>
         <section class="container">
+            <section class="info-section">
+                <a href="https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data" target="blank">Data source</a>
+            </section>
             <div id="map">
                 <svg version="1.1"
                         baseprofile="full"
@@ -28,18 +33,17 @@
                     <p>State Name: </p>
                     <p>Confirmed: </p>
                     <p>Deaths: </p>
-                    <p>Recovered: </p>
                 </div>
                 <div id="county-info" class="info">
                     <p>County Name: </p>
                     <p>Confirmed: </p>
                     <p>Deaths: </p>
-                    <p>Recovered: </p>
                 </div>
             </section>
         </section>  
         <div id="tooltip"></div>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
+        <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
         <script src="./js/states.js"></script>
         <script src="./js/index.js"></script>

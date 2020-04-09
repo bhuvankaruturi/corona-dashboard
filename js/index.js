@@ -4,10 +4,14 @@ var country = "US";
 var stat = "confirmed";
 var dailyReportBaseUri = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";
 // color values
+// var colorValues = {
+//     deaths: ["#facaca", "#f70505"],
+//     confirmed: ["#cdd8fa", "#426ff5"]
+// };
 var colorValues = {
-    deaths: ["#facaca", "#f70505"],
-    confirmed: ["#cdd8fa", "#426ff5"]
-};
+    deaths: d3.interpolateRgb("#fcd9d9","#bd0202"),
+    confirmed: d3.interpolateRgb("#d4ddfa","#002aff")
+}
 var dataCSV = {};
 var dataRead = false;
 
@@ -177,17 +181,14 @@ function buildNewMap(currState) {
 const drawMap = function (topology) {
     var stat = d3.select('#stat').property('value');
     var prevSelected = null;
-    var colorScale = d3.scaleLinear()
-                .domain(d3.extent(dataCSV[currState].regions, d => d[stat]))
-                .range(colorValues[stat]);
+    
+    var colorScale = d3.scaleSequential(colorValues[stat])
+                    .domain(d3.extent(dataCSV[currState].regions, d => d[stat]));
     // draw map
     var map = d3.select("#map")
         .selectAll('svg')
         .attr("width", width)
         .attr("height", height);
-    // var projection = d3.geoMercator();
-    // projection.fitSize([width, height], topology);
-    // console.log(currState);
     var projection = d3.geoAlbersUsa().fitSize([width, height], topology);
     var path = d3.geoPath()
         .projection(projection)
@@ -202,17 +203,6 @@ const drawMap = function (topology) {
             if (d.properties[stat] == undefined) return '#ccc';
             else return colorScale(d.properties[stat]);
         })
-        // .on('click', function(d) {
-        //     d3.select(this).style('stroke', '#03fccf').style('stroke-width', 1);
-        //     if (prevSelected && prevSelected != this) d3.select(prevSelected).style('stroke', 'black');
-        //     prevSelected =this;
-        //     var info = d3.select("#county-info");
-        //     info.style('opacity', 1)
-        //         .html(`<p>County Name: ${d.properties.NAME}</p>
-        //         <p>Confirmed: ${d.properties.confirmed != undefined?d.properties.confirmed:'No data'}</p>
-        //         <p>Deaths: ${d.properties.deaths != undefined?d.properties.deaths:'No data'}</p>
-        //         <p>Recovered: ${d.properties.recovered != undefined?d.properties.recovered:'No data'}</p>`);
-        // })
         .on('mouseover touchstart', function(d){
             var tooltip = d3.select('#tooltip');
             tooltip.style('opacity', 1)
@@ -220,8 +210,7 @@ const drawMap = function (topology) {
                 .style('top', (d3.event.pageY + 10) + 'px')
                 .html(`<p>Name: ${d.properties.NAME}</p>
                     <p>Confirmed: ${d.properties.confirmed != undefined?d.properties.confirmed:'Data not available'}</p>
-                    <p>Deaths: ${d.properties.deaths != undefined?d.properties.deaths:'Data not available'}</p>
-                    <p>Recovered: ${d.properties.recovered != undefined?d.properties.recovered:'Data not available'}</p>`);
+                    <p>Deaths: ${d.properties.deaths != undefined?d.properties.deaths:'Data not available'}</p>`);
         })
         .on('mouseout touchend', function(d){
             d3.select('#tooltip').style('opacity', 0);
@@ -230,10 +219,8 @@ const drawMap = function (topology) {
 
 function drawMapWithStat() {
     let stat = d3.select('#stat').property('value');
-    var colorScale = d3.scaleLinear()
-                .domain(d3.extent(dataCSV[currState].regions, d => d[stat]))
-                .range(colorValues[stat]);
-    console.log(colorScale);
+    var colorScale = d3.scaleSequential(colorValues[stat])
+                    .domain(d3.extent(dataCSV[currState].regions, d => d[stat]));
     let atlas = d3.select('#map').selectAll('svg').selectAll('.map');
     atlas.style("stroke", "black")
         .attr("fill", d => {
@@ -245,8 +232,8 @@ function drawMapWithStat() {
 function showInfo(details) {
     var info = d3.select("#state-info");
     info.style('opacity', 1)
-        .html(`<p>Name: ${details.name}</p>
+        .html(`<p>Name: <span class="name">${details.name == "US" ? "United States" : details.name}</span></p>
         <p>Confirmed: ${details.confirmed}</p>
         <p>Deaths: ${details.deaths}</p>
-        <p>Recovered: ${details.recovered}</p>`);
+        ${currState == 'all-states'?`<p>Recovered: ${details.recovered}</p>`:''}`);
 }
