@@ -3,11 +3,6 @@ var height = 600;
 var country = "US";
 var stat = "confirmed";
 var dailyReportBaseUri = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";
-// color values
-// var colorValues = {
-//     deaths: ["#facaca", "#f70505"],
-//     confirmed: ["#cdd8fa", "#426ff5"]
-// };
 var colorValues = {
     deaths: d3.interpolateRgb("#fcd9d9","#bd0202"),
     confirmed: d3.interpolateRgb("#d4ddfa","#002aff")
@@ -29,7 +24,7 @@ function getCSVFileName () {
 }
 
 function capitalize(s) {
-    return s.charAt(0).toUpperCase() + currState.slice(1);
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 function transformName(s) {
@@ -215,6 +210,7 @@ const drawMap = function (topology) {
         .on('mouseout touchend', function(d){
             d3.select('#tooltip').style('opacity', 0);
         });
+        createLegend(colorScale, stat);
 }
 
 function drawMapWithStat() {
@@ -227,6 +223,41 @@ function drawMapWithStat() {
             if (d.properties[stat] == undefined) return '#ccc';
             else return colorScale(d.properties[stat]);
         });
+    createLegend(colorScale, stat);
+}
+
+function createLegend(colorScale, stat) {
+    var colorLegend = d3.legendColor()
+        .labelFormat(d3.format(".0f"))
+        .labels(thresholdLabels)
+        .title(capitalize(stat))
+        .scale(colorScale)
+        .cells(5)
+        .shapePadding(5)
+        .shapeWidth(50)
+        .shapeHeight(20)
+        .labelOffset(12);
+    var legend = d3.select('#scale').selectAll('svg');
+    legend.selectAll('g').remove();
+    legend.append("g")
+        .attr("transform", "translate(10, 12)")
+        .call(colorLegend);
+}
+
+function thresholdLabels ({
+    i,
+    genLength,
+    generatedLabels,
+    labelDelimiter
+  }) {
+    if (i === 0) {
+      const values = generatedLabels[i].split(` ${labelDelimiter} `)
+      return `Less than ${values[0]}`
+    } else if (i === genLength - 1) {
+      const values = generatedLabels[i].split(` ${labelDelimiter} `)
+      return `${values[0]} or more`
+    }
+    return generatedLabels[i]
 }
 
 function showInfo(details) {

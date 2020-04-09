@@ -27,6 +27,14 @@ a {
 	padding: 5px;
 }
 
+text {
+	fill: white;
+} 
+
+section {
+	margin: 0px 10px;
+}
+
 a:hover {
 	color: rgb(198, 232, 243)
 }
@@ -35,7 +43,7 @@ a:hover {
 	margin: 10px;
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: center;
 }
 
 
@@ -51,7 +59,7 @@ a:hover {
 }
 
 .info-section {
-	padding-top: 20px;
+	padding-top: 2px;
 	display: flex;
 	flex-direction: column;
 	align-items: start;
