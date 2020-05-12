@@ -1,5 +1,5 @@
-var width = 600;
-var height = 550;
+var width = window.innerWidth / 1.9;
+var height = window.innerHeight * 0.75;
 var counter = 0;
 var country = "US";
 var stat = "confirmed";
@@ -182,8 +182,7 @@ function buildNewMap(currState) {
 
 const drawMap = function (topology) {
     var stat = d3.select('#stat').property('value');
-    var prevSelected = null;
-    
+
     var colorScale = d3.scaleSequential(colorValues[stat])
                     .domain(d3.extent(dataCSV[currState].regions, d => d[stat]));
     // draw map
