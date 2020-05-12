@@ -1,5 +1,6 @@
 var width = 600;
 var height = 550;
+var counter = 0;
 var country = "US";
 var stat = "confirmed";
 var dailyReportBaseUri = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/";
@@ -11,13 +12,14 @@ var dataCSV = {};
 var dataRead = false;
 
 function addZero(n) {
-    return n > 10 ? '' + n : '0' + n;
+    return n >= 10 ? '' + n : '0' + n;
 }
 
-function getCSVFileName () {
+function getCSVFileName (counter) {
     const date = new Date();
+    date.setDate(date.getUTCDate() > date.getDate() ? (date.getDate() - counter) : (date.getDate() - 1 - counter));
     const month = date.getMonth() + 1;
-    const day = date.getUTCDate() > date.getDate() ? date.getDate() : date.getDate() - 1;
+    const day = date.getDate();
     const year = date.getFullYear();
     let formatedDate = addZero(month) + '-' + addZero(day) + '-' + year;
     return dailyReportBaseUri + formatedDate + '.csv';
@@ -46,11 +48,16 @@ d3.select('#state')
 populateOptions('texas');
 
 async function init(currState) {
-    let promise = getCoronaData(getCSVFileName());
-    let result = await promise;
-    if (result) {
-        dataRead = true;
-        buildNewMap(currState);
+    let promise = getCoronaData(getCSVFileName(counter));
+    try {
+        let result = await promise;
+        if (result) {
+            dataRead = true;
+            buildNewMap(currState);
+        }
+    } catch (e) {
+        counter++;
+        init(currState);
     }
 }
 
